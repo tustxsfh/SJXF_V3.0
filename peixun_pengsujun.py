@@ -20,6 +20,7 @@ browser.maximize_window()
 
 start_time = time.time()
 
+"""彭只有一个专题"""
 
 def login(ume, pwd):  # 登录函数
 
@@ -192,7 +193,7 @@ def keicheng():
                 print('\n')
                 browser.refresh()
             elif '随堂小测验' in li_html:
-                break
+                continue
 
             else:
                 print('读文字')

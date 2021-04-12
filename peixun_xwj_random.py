@@ -58,6 +58,7 @@ def login(ume, pwd):  # 登录函数
 
 def peixun():
     """专题培训学习"""
+    print('专题学习')
     with open('peixun_url.txt', 'r') as f:
         cou_url_list = f.read().splitlines()
 
@@ -145,7 +146,7 @@ def peixun():
                 browser.refresh()
 
             elif '随堂小测验' in li_html:
-                break
+                continue
 
             else:
                 print('读文字')
@@ -159,6 +160,7 @@ def peixun():
 
 def keicheng():
     """课程学习"""
+    print('课程学习')
     with open('cou_url.txt', 'r') as f:
         cou_url_list = f.read().splitlines()
 
@@ -242,9 +244,6 @@ def keicheng():
                 print('\n')
                 print('\n')
                 browser.refresh()
-
-            elif '随堂小测验' in li_html:
-                break
 
             elif '随堂小测验' in li_html:
                 continue
