@@ -59,6 +59,46 @@ def login(ume, pwd):    # 登录函数
     time.sleep(10)
 
 
+def find_peixun_url():
+
+    """获取我的专题培训课程url"""
+
+    # https://www.sxgbxx.gov.cn/uc/plan  我的培训
+    pei_url = 'https://www.sxgbxx.gov.cn/uc/plan'
+
+    browser.get(pei_url)
+    r = browser.page_source
+    pei_obj = BeautifulSoup(r, "lxml")
+    pei_list = pei_obj.findAll("div", {"class": "e-m-more"})  # 获取我的专题培训内容
+
+    f1 = open('xue_url.txt', 'w')  # 培训课程的url
+
+    for pid in pei_list:
+        pid = str(pid)
+        print(pid)
+        pid = re.findall(r'id=(.+?)"', pid)
+        print(pid)
+        peixun_url = 'https://www.sxgbxx.gov.cn/uc/plan/info?id=' + pid[0]  # 生成培训课题的url
+        browser.get(peixun_url)
+
+        # print(browser.page_source)
+        time.sleep(10)
+        r = browser.page_source
+        pei_obj = BeautifulSoup(r, "lxml")
+        peixun_list = pei_obj.findAll("a", {"class": "lh-reply-btn"})
+
+        for i in peixun_list:
+            # print(i)
+            # print(i.get_text())
+            # print(i['href'])
+            i = 'https://www.sxgbxx.gov.cn' + str(i['href'])
+            print(i)
+            f1.write(i)
+            f1.write('\n')
+
+    f1.close()
+
+
 def peixun():
     """专题培训学习"""
     print('专题学习')
@@ -96,7 +136,11 @@ def peixun():
             id = ''.join(id)
             print(id)
 
+
+
             if '视频播放' in li_html:
+                if '100%' in li_html:
+                    continue
                 title = li.get_text()  # 找到课程标题
                 print(title)
                 shichang = re.findall(r'\d+分\d+秒', li_html)
@@ -123,6 +167,8 @@ def peixun():
                 browser.refresh()
 
             elif '音频播放' in li_html:
+                if '100%' in li_html:
+                    continue
                 title = li.get_text()  # 找到课程标题
                 print(title)
                 shichang = re.findall(r'\d+分\d+秒', li_html)
@@ -146,6 +192,8 @@ def peixun():
                 continue
 
             else:
+                if '100%' in li_html:
+                    continue
                 print('读文字')
                 browser.find_element_by_id(id).click()
                 time.sleep(5)
@@ -190,6 +238,9 @@ def keicheng():
             id = re.findall(r'kp_\d+', li_html)
             id = ''.join(id)
             print(id)
+
+            if '100%' in li_html:
+                continue
 
             if '视频播放' or '音频' in li_html:
                 title = li.get_text()  # 找到课程标题
@@ -255,7 +306,9 @@ ume = 'u0283323'
 pwd = 'u0283323'
 login(ume, pwd)
 
+# 获取专题培训url
 
+# find_peixun_url()
 
 # 完成课程学习功能
 # keicheng()
