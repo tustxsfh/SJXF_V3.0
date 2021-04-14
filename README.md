@@ -1,4 +1,4 @@
-# SJXF_V3.0
+# SXHGB_V3.0
 用于山西好干部在线学习
 依赖 pillow pytesseract bs4 selenium
 可以完成课程学习和专题培训
