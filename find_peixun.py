@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- 
+# 找到专题培训课程URL，写入文件
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
@@ -23,9 +24,9 @@ login_url = "https://www.sxgbxx.gov.cn/login"
 browser.get(login_url)
 
 username = browser.find_element_by_id('userEmail')
-username.send_keys('u0139491')                       #此处填入账号
+username.send_keys('*********')                       #此处填入账号
 password = browser.find_element_by_id('userPassword')
-password.send_keys('u0139491')                       #此处填入密码
+password.send_keys('*********')                       #此处填入密码
 #获取截图
 browser.get_screenshot_as_file('tempimg/screenshot.png')
 
