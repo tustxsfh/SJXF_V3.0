@@ -68,7 +68,7 @@ def peixun():
 
         # 培训页面
         pei_url = (cou_url_list[random.randint(1, sum - 1)])
-    # for pei_url in cou_url_list:
+        # for pei_url in cou_url_list:
         browser.get(pei_url)
         print('--------------------------------------')
         print(pei_url)
@@ -268,3 +268,6 @@ login(ume, pwd)
 
 # 完成专题培训学习功能
 peixun()
+
+browser.quit()
+exit()

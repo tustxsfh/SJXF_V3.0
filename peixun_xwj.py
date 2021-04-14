@@ -14,9 +14,6 @@ from PIL import Image
 import pytesseract
 from pytesseract import image_to_string
 
-
-
-
 browser = webdriver.Chrome()
 browser.implicitly_wait(60 * 3)
 browser.maximize_window()
@@ -24,7 +21,7 @@ browser.maximize_window()
 start_time = time.time()
 
 
-def login(ume, pwd):    # 登录函数
+def login(ume, pwd):  # 登录函数
 
     # 登录页面
     login_url = "https://www.sxgbxx.gov.cn/login"
@@ -60,7 +57,6 @@ def login(ume, pwd):    # 登录函数
 
 
 def find_peixun_url():
-
     """获取我的专题培训课程url"""
 
     # https://www.sxgbxx.gov.cn/uc/plan  我的培训
@@ -124,9 +120,9 @@ def peixun():
         for li in li_list:
 
             end_time = time.time()
-            study_time =(end_time - start_time)/60
-            print('已学习%s分' %study_time)
-            
+            study_time = (end_time - start_time) / 60
+            print('已学习%s分' % study_time)
+
             li_html = str(li)
             # print('--------------------------------------')
             # print(li_html)
@@ -135,8 +131,6 @@ def peixun():
             id = re.findall(r'kp_\d+', li_html)
             id = ''.join(id)
             print(id)
-
-
 
             if '视频播放' in li_html:
                 if '100%' in li_html:
@@ -202,6 +196,7 @@ def peixun():
                 print('\n')
                 browser.refresh()
 
+
 def keicheng():
     """课程学习"""
     print('课程学习')
@@ -227,8 +222,8 @@ def keicheng():
         for li in li_list:
 
             end_time = time.time()
-            study_time =(end_time - start_time)/60
-            print('已学习%s分' %study_time)
+            study_time = (end_time - start_time) / 60
+            print('已学习%s分' % study_time)
 
             li_html = str(li)
             # print('--------------------------------------')
@@ -239,10 +234,9 @@ def keicheng():
             id = ''.join(id)
             print(id)
 
-            if '100%' in li_html:
-                continue
-
-            if '视频播放' or '音频' in li_html:
+            if '视频播放' in li_html:
+                if '100%' in li_html:
+                    continue
                 title = li.get_text()  # 找到课程标题
                 print(title)
                 shichang = re.findall(r'\d+分\d+秒', li_html)
@@ -269,6 +263,8 @@ def keicheng():
                 browser.refresh()
 
             elif '音频播放' in li_html:
+                if '100%' in li_html:
+                    continue
                 title = li.get_text()  # 找到课程标题
                 print(title)
                 shichang = re.findall(r'\d+分\d+秒', li_html)
@@ -292,6 +288,8 @@ def keicheng():
                 continue
 
             else:
+                if '100%' in li_html:
+                    continue
                 print('读文字')
                 browser.find_element_by_id(id).click()
                 time.sleep(5)
@@ -311,7 +309,10 @@ login(ume, pwd)
 # find_peixun_url()
 
 # 完成课程学习功能
-# keicheng()
+keicheng()
 
 # 完成专题培训学习功能
-peixun()
+# peixun()
+
+browser.quit()
+exit()
