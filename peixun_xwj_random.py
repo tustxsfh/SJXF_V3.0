@@ -8,13 +8,18 @@ import re
 import json
 import random
 from urllib.request import urlopen
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from PIL import Image
 import pytesseract
 from pytesseract import image_to_string
 
-browser = webdriver.Chrome()
+
+# 使用无头模式打开chrome
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+browser = webdriver.Chrome(chrome_options=chrome_options)
 browser.implicitly_wait(60 * 3)
 browser.maximize_window()
 
@@ -54,6 +59,45 @@ def login(ume, pwd):  # 登录函数
     browser.find_element_by_class_name('bm-lr-btn').click()
 
     time.sleep(10)
+
+
+def find_peixun_url():
+    """获取我的专题培训课程url"""
+
+    # https://www.sxgbxx.gov.cn/uc/plan  我的培训
+    pei_url = 'https://www.sxgbxx.gov.cn/uc/plan'
+
+    browser.get(pei_url)
+    r = browser.page_source
+    pei_obj = BeautifulSoup(r, "lxml")
+    pei_list = pei_obj.findAll("div", {"class": "e-m-more"})  # 获取我的专题培训内容
+
+    f1 = open('xue_url.txt', 'w')  # 培训课程的url
+
+    for pid in pei_list:
+        pid = str(pid)
+        print(pid)
+        pid = re.findall(r'id=(.+?)"', pid)
+        print(pid)
+        peixun_url = 'https://www.sxgbxx.gov.cn/uc/plan/info?id=' + pid[0]  # 生成培训课题的url
+        browser.get(peixun_url)
+
+        # print(browser.page_source)
+        time.sleep(10)
+        r = browser.page_source
+        pei_obj = BeautifulSoup(r, "lxml")
+        peixun_list = pei_obj.findAll("a", {"class": "lh-reply-btn"})
+
+        for i in peixun_list:
+            # print(i)
+            # print(i.get_text())
+            # print(i['href'])
+            i = 'https://www.sxgbxx.gov.cn' + str(i['href'])
+            print(i)
+            f1.write(i)
+            f1.write('\n')
+
+    f1.close()
 
 
 def peixun():
