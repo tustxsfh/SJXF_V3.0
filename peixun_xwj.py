@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
-# from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options
 import time
 from bs4 import BeautifulSoup
 import requests
@@ -14,7 +14,10 @@ from PIL import Image
 import pytesseract
 from pytesseract import image_to_string
 
-browser = webdriver.Chrome()
+# 使用无头模式打开chrome
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+browser = webdriver.Chrome(chrome_options=chrome_options)
 browser.implicitly_wait(60 * 3)
 browser.maximize_window()
 
